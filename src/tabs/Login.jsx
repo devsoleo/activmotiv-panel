@@ -3,8 +3,8 @@ import { api } from '../../axios'
 import Panel from '../tabs/Panel.jsx'
 
 function Login() {
-  const [uid, setUID] = useState("adminacc")
-  const [password, setPassword] = useState("adminacc")
+  const [uid, setUID] = useState("")
+  const [password, setPassword] = useState("")
 
   const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"))
   const [isLoggedIn, setIsLoggedIn] = useState(false)
