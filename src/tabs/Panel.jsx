@@ -9,21 +9,21 @@ function Panel() {
     await api.post("/admin/create-account", { account_uid: uid, account_is_admin: "false" })
     .then((response) => {
       console.log(response)
+      alert(`Compte "${uid}" créé !`)
     })
     .catch((error) => {
       console.log(error)
+      alert("Une erreur est survenue !")
     })
   }
 
   return (
-    <>
-      <div id="form-create_account">
-        <h4>Création de compte</h4>
-        <input type="text" id="uid" placeholder="UID" value={uid} disabled />
-        <input type="button" value="Générer le UID" onClick={() => setUID(generateUID())} />
-        <input type="button" id="login" value="Créer le compte" onClick={handleCreateAccount} />
-      </div>
-    </>
+    <div id="form-create_account">
+      <h4>Création de compte</h4>
+      <input type="text" id="uid" placeholder="UID" value={uid} disabled />
+      <input type="button" value="Générer le UID" onClick={() => setUID(generateUID())} />
+      <input type="button" id="login" value="Créer le compte" onClick={handleCreateAccount} />
+    </div>
   )
 }
 

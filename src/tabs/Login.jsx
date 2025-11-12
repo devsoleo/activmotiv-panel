@@ -24,7 +24,7 @@ function Login() {
   }, [accessToken])
 
   const handleLogin = async () => {
-    await api.post("/auth/login", { uid, password })
+    await api.post("/admin/login", { uid, password })
     .then((response) => {
       setAccessToken(response.data.accessToken)
     })
