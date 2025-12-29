@@ -7,12 +7,12 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3000/',
+        target: 'http://localhost:3000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
         headers: { 
           'Content-Type': 'application/json',
-          'X-Client-Version': '2.0.0'
+          'X-Client-Version': '3.0.0'
         }
       }
     }
