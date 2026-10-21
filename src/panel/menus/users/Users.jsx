@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import UsersCreate from './UsersCreate'
+import UsersCreate from '../UsersCreate'
 import UsersList from './UsersList'
 
 export default function DataTable() {

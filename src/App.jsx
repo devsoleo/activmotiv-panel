@@ -1,3 +1,4 @@
+import { BrowserRouter } from 'react-router-dom'
 import AuthProvider from './AuthProvider.jsx'
 
 import '@fontsource/roboto/300.css'
@@ -12,7 +13,7 @@ const theme = createTheme({
   colorSchemes: {
     dark: true,
   },
-    components: {
+  components: {
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
@@ -29,7 +30,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />
-      <AuthProvider />
+      <BrowserRouter>
+        <AuthProvider />
+      </BrowserRouter>
     </ThemeProvider>
   )
 }

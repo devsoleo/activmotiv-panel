@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { api } from "../../../axios"
+import { api } from "../../../../axios"
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
