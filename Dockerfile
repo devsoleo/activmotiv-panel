@@ -2,8 +2,6 @@ FROM node:24-alpine AS build
 
 WORKDIR /app
 
-ENV VITE_API_PUBLIC_URL=VITE_API_PUBLIC_URL
-
 COPY . .
 
 RUN npm i
