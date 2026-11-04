@@ -55,19 +55,20 @@ export default function UsersCreate({ onUserAdded }) {
   }
 
   return (
-    <Paper sx={{ p: 3, mb: 4, borderRadius: 2 }} elevation={1}>
+    <Paper sx={{ p: { xs: 2, sm: 3 }, mb: 4, borderRadius: 2 }} elevation={1}>
       <Typography variant="h6" component="h2" sx={{ mb: 2.5, fontWeight: 600 }}>
         Ajouter un participant
       </Typography>
       <Box
         sx={{
           display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
           flexWrap: 'wrap',
-          alignItems: 'center',
-          gap: 2.5,
+          alignItems: { xs: 'stretch', sm: 'center' },
+          gap: { xs: 2, sm: 2.5 }
         }}
       >
-        <FormControl variant="outlined" sx={{ minWidth: 200 }}>
+        <FormControl variant="outlined" sx={{ flex: { xs: '1 1 100%', sm: '1 1 180px' }, minWidth: { xs: '100%', sm: 180 } }}>
           <InputLabel htmlFor="uid">UID</InputLabel>
           <OutlinedInput
             id="uid"
@@ -95,7 +96,7 @@ export default function UsersCreate({ onUserAdded }) {
             slotProps={{
               field: { clearable: true }
             }}
-            sx={{ minWidth: 250 }}
+            sx={{ flex: { xs: '1 1 100%', sm: '1 1 220px' }, minWidth: { xs: '100%', sm: 220 } }}
           />
         </LocalizationProvider>
 
@@ -107,6 +108,7 @@ export default function UsersCreate({ onUserAdded }) {
             />
           }
           label="Administrateur"
+          sx={{ my: { xs: 0.5, sm: 0 } }}
         />
 
         <Button
@@ -114,7 +116,12 @@ export default function UsersCreate({ onUserAdded }) {
           id="login"
           onClick={handleCreateAccount}
           disabled={loading}
-          sx={{ height: 56, px: 3, ml: 'auto' }}
+          sx={{
+            height: 56,
+            px: 4,
+            width: { xs: '100%', sm: 'auto' },
+            ml: { sm: 'auto' }
+          }}
         >
           {loading ? 'Ajout...' : 'Ajouter'}
         </Button>
