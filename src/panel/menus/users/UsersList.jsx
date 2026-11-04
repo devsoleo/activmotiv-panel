@@ -6,35 +6,9 @@ import { Chip } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { api } from '../../../../axios'
 import dayjs from 'dayjs'
+import { UserEndDate } from '../../../components/UserEndDate'
 
 const paginationModel = { page: 0, pageSize: 15 }
-
-function UserEndDateCell({ userId }) {
-  const [endDate, setEndDate] = useState(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    let isMounted = true
-    api.get(`/admin/users/${userId}/end-date`)
-      .then(res => {
-        if (isMounted && res.data?.endDate) {
-          setEndDate(res.data.endDate)
-        }
-      })
-      .catch(err => {
-        console.error("Erreur récupération date de fin:", err)
-      })
-      .finally(() => {
-        if (isMounted) setLoading(false)
-      })
-    return () => { isMounted = false }
-  }, [userId])
-
-  if (loading) return <span style={{ color: '#9e9e9e' }}>...</span>
-  if (!endDate) return <span>N/A</span>
-
-  return <span>{dayjs(endDate).format('DD/MM/YYYY')}</span>
-}
 
 export default function UsersList({ refreshTrigger }) {
   const [rows, setRows] = useState([])
@@ -88,7 +62,7 @@ export default function UsersList({ refreshTrigger }) {
       renderCell: params => {
         return (
           <>
-            {(params.row.team > 0) ? <UserEndDateCell userId={params.row.id} /> : '-'}
+            {(params.row.team > 0) ? <UserEndDate uid={params.row.uid} /> : '-'}
           </>
         )
       }
@@ -139,7 +113,7 @@ export default function UsersList({ refreshTrigger }) {
           loading={loading}
           processRowUpdate={async (newRow, oldRow) => {
             if (newRow.sensor_number !== oldRow.sensor_number) {
-              await api.put(`/admin/users/${newRow.id}/sensor`, { sensor_number: newRow.sensor_number })
+              await api.put(`/admin/users/${newRow.id}/sensors`, { sensor_number: newRow.sensor_number })
             }
             return newRow
           }}

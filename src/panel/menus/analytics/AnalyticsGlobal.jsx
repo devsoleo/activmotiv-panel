@@ -6,122 +6,118 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import CircularProgress from '@mui/material/CircularProgress'
 import Chip from '@mui/material/Chip'
+import Stack from '@mui/material/Stack'
+import Avatar from '@mui/material/Avatar'
+import { alpha } from '@mui/material/styles'
+
+// Icons
+import GroupsIcon from '@mui/icons-material/Groups'
+import TimelineIcon from '@mui/icons-material/Timeline'
+import FlashOnIcon from '@mui/icons-material/FlashOn'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import PersonAddDisabledIcon from '@mui/icons-material/PersonAddDisabled'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { api } from '../../../../axios'
 
-function GrafanaStatCard({ title, value, loading, color }) {
+function StatCard({ title, value, loading, color, icon, subtitle }) {
   return (
     <Paper
-      elevation={0}
+      elevation={1}
       sx={{
         p: 2.5,
         height: '100%',
-        minHeight: 180,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        backgroundColor: '#181b1f',
-        color: '#f7f9fb',
-        borderRadius: '6px',
-        border: '1px solid rgba(255, 255, 255, 0.08)',
-        position: 'relative',
-        cursor: 'pointer',
-        overflow: 'hidden',
-        transition: 'transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease',
-        '&:hover': {
-          transform: 'translateY(-2px)',
-          boxShadow: '0 6px 16px rgba(0, 0, 0, 0.4)',
-        }
+        borderRadius: 2
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1 }}>
-        <Typography
-          variant="subtitle2"
-          sx={{
-            color: '#a1a8b6',
-            fontWeight: 600,
-            fontSize: '0.85rem',
-            lineHeight: 1.2,
-            letterSpacing: '0.2px'
-          }}
-        >
+      <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1.5} sx={{ mb: 1.5 }}>
+        <Typography variant="subtitle2" color="text.secondary" fontWeight={600}>
           {title}
         </Typography>
-      </Box>
+      </Stack>
 
-      <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', my: 1.5 }}>
+      <Box sx={{ my: 1 }}>
         {loading ? (
-          <CircularProgress size={32} sx={{ color }} />
+          <CircularProgress size={28} sx={{ color }} />
         ) : (
           <Typography
+            variant="h3"
+            fontWeight={700}
             sx={{
-              fontSize: { xs: '2.5rem', md: '3rem' },
-              fontWeight: 700,
-              lineHeight: 1,
               color,
-              textAlign: 'center',
-              letterSpacing: '-0.5px'
+              lineHeight: 1,
+              letterSpacing: '-0.5px',
             }}
           >
             {value ?? 0}
           </Typography>
         )}
       </Box>
+
+      {subtitle && (
+        <Typography variant="caption" color="text.secondary" fontWeight={500}>
+          {subtitle}
+        </Typography>
+      )}
     </Paper>
   )
 }
 
-function GrafanaListCard({ title, users = [], loading, color, emptyMessage }) {
+function ListCard({ title, users = [], loading, color, emptyMessage, icon }) {
   return (
     <Paper
-      elevation={0}
+      elevation={1}
       sx={{
         p: 2.5,
         height: '100%',
-        minHeight: 180,
+        minHeight: 220,
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: '#181b1f',
-        color: '#f7f9fb',
-        borderRadius: '6px',
-        border: '1px solid rgba(255, 255, 255, 0.08)',
-        position: 'relative',
-        overflow: 'hidden',
-        cursor: 'pointer',
-        transition: 'transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease',
+        borderRadius: 2,
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
         '&:hover': {
-          transform: 'translateY(-2px)',
-          boxShadow: '0 6px 16px rgba(0, 0, 0, 0.4)',
-        }
+          boxShadow: 3,
+        },
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, mb: 1.5 }}>
-        <Typography
-          variant="subtitle2"
+      <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1} sx={{ mb: 2 }}>
+        <Stack direction="row" alignItems="center" spacing={1.5}>
+          {icon && (
+            <Avatar sx={{ bgcolor: alpha(color, 0.12), color, width: 32, height: 32 }}>
+              {icon}
+            </Avatar>
+          )}
+          <Typography variant="subtitle2" fontWeight={600} color="text.primary">
+            {title}
+          </Typography>
+        </Stack>
+        <Chip
+          label={users.length}
+          size="small"
           sx={{
-            color: '#a1a8b6',
-            fontWeight: 600,
-            fontSize: '0.85rem',
-            lineHeight: 1.2,
-            letterSpacing: '0.2px'
+            bgcolor: alpha(color, 0.12),
+            color: color,
+            fontWeight: 700,
+            fontSize: '0.75rem',
           }}
-        >
-          {title}
-        </Typography>
-      </Box>
+        />
+      </Stack>
 
-      <Box sx={{ flexGrow: 1, overflowY: 'auto', maxHeight: 120, pr: 0.5 }}>
+      <Box sx={{ flexGrow: 1, overflowY: 'auto', maxHeight: 180, pr: 0.5 }}>
         {loading ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', minHeight: 80 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', minHeight: 100 }}>
             <CircularProgress size={28} sx={{ color }} />
           </Box>
         ) : users.length === 0 ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', minHeight: 80 }}>
-            <Typography variant="body2" sx={{ color: '#7a828e', fontStyle: 'italic', textAlign: 'center' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', minHeight: 100 }}>
+            <Typography variant="body2" color="text.secondary" fontStyle="italic">
               {emptyMessage || 'Aucun participant'}
             </Typography>
           </Box>
         ) : (
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
+          <Stack spacing={1}>
             {users.map((u) => (
               <Box
                 key={u.id}
@@ -132,143 +128,46 @@ function GrafanaListCard({ title, users = [], loading, color, emptyMessage }) {
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   px: 1.5,
-                  py: 0.6,
-                  backgroundColor: 'rgba(255, 255, 255, 0.04)',
-                  borderRadius: '4px',
-                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  py: 1,
+                  bgcolor: (theme) =>
+                    theme.palette.mode === 'dark'
+                      ? alpha(theme.palette.common.white, 0.04)
+                      : alpha(theme.palette.common.black, 0.02),
+                  borderRadius: 1.5,
+                  border: '1px solid',
+                  borderColor: 'divider',
                   textDecoration: 'none',
+                  transition: 'all 0.15s ease',
                   '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.08)'
-                  }
+                    bgcolor: alpha(color, 0.08),
+                    borderColor: color,
+                  },
                 }}
               >
-                <Typography sx={{ fontFamily: 'monospace', fontWeight: 600, fontSize: '0.85rem', color: '#f7f9fb' }}>
+                <Typography
+                  sx={{
+                    fontFamily: 'monospace',
+                    fontWeight: 600,
+                    fontSize: '0.85rem',
+                    color: '#5794f2',
+                  }}
+                >
                   {u.uid}
                 </Typography>
-                {u.team > 0 && (
-                  <Typography variant="caption" sx={{ color: '#a1a8b6', fontSize: '0.75rem' }}>
-                    Groupe {u.team}
-                  </Typography>
-                )}
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  {u.team > 0 && (
+                    <Chip
+                      label={`Groupe ${u.team}`}
+                      size="small"
+                      variant="outlined"
+                      sx={{ height: 20, fontSize: '0.7rem' }}
+                    />
+                  )}
+                  <ChevronRightIcon fontSize="small" sx={{ color: 'text.secondary' }} />
+                </Stack>
               </Box>
             ))}
-          </Box>
-        )}
-      </Box>
-    </Paper>
-  )
-}
-
-function GrafanaAlertsCard({ alerts = [], loading }) {
-  const alertColor = '#ff5252'
-
-  return (
-    <Paper
-      elevation={0}
-      sx={{
-        p: 2.5,
-        height: '100%',
-        minHeight: 220,
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: '#181b1f',
-        color: '#f7f9fb',
-        borderRadius: '6px',
-        border: '1px solid rgba(255, 255, 255, 0.08)',
-        position: 'relative',
-        overflow: 'hidden',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-        transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
-        '&:hover': {
-          borderColor: alertColor,
-          boxShadow: '0 6px 16px rgba(0, 0, 0, 0.4)',
-        }
-      }}
-    >
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, mb: 2 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Typography
-            variant="subtitle2"
-            sx={{
-              color: '#a1a8b6',
-              fontWeight: 600,
-              fontSize: '0.85rem',
-              lineHeight: 1.2,
-              letterSpacing: '0.2px'
-            }}
-          >
-            Alertes des 3 derniers jours
-          </Typography>
-          {!loading && (
-            <Chip
-              label={`${alerts.length} alerte${alerts.length > 1 ? 's' : ''}`}
-              size="small"
-              sx={{
-                height: 20,
-                fontSize: '0.7rem',
-                fontWeight: 700,
-                backgroundColor: alerts.length > 0 ? 'rgba(255, 82, 82, 0.2)' : 'rgba(115, 191, 105, 0.2)',
-                color: alerts.length > 0 ? '#ff5252' : '#73bf69',
-                border: `1px solid ${alerts.length > 0 ? 'rgba(255, 82, 82, 0.4)' : 'rgba(115, 191, 105, 0.4)'}`
-              }}
-            />
-          )}
-        </Box>
-      </Box>
-
-      <Box sx={{ flexGrow: 1, overflowY: 'auto', maxHeight: 240, pr: 0.5 }}>
-        {loading ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', minHeight: 120 }}>
-            <CircularProgress size={28} sx={{ color: alertColor }} />
-          </Box>
-        ) : alerts.length === 0 ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', minHeight: 120 }}>
-            <Typography variant="body2" sx={{ color: '#73bf69', fontStyle: 'italic', textAlign: 'center' }}>
-              Aucune alerte sur les 3 derniers jours
-            </Typography>
-          </Box>
-        ) : (
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            {alerts.map((item) => (
-              <Box
-                key={item.id}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  px: 2,
-                  py: 1,
-                  backgroundColor: 'rgba(255, 82, 82, 0.06)',
-                  borderRadius: '4px',
-                  border: '1px solid rgba(255, 82, 82, 0.15)',
-                  '&:hover': {
-                    backgroundColor: 'rgba(255, 82, 82, 0.12)'
-                  }
-                }}
-              >
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <Typography sx={{ fontFamily: 'monospace', fontWeight: 700, fontSize: '0.9rem', color: '#f7f9fb' }}>
-                    {item.uid}
-                  </Typography>
-                  <Chip
-                    label={item.type}
-                    size="small"
-                    sx={{
-                      height: 22,
-                      fontSize: '0.75rem',
-                      fontWeight: 600,
-                      backgroundColor: item.type === 'capteur non porté' ? 'rgba(242, 153, 74, 0.2)' : 'rgba(179, 98, 255, 0.2)',
-                      color: item.type === 'capteur non porté' ? '#f2994a' : '#b362ff',
-                      border: `1px solid ${item.type === 'capteur non porté' ? '#f2994a' : '#b362ff'}`
-                    }}
-                  />
-                </Box>
-                <Typography variant="caption" sx={{ color: '#a1a8b6', fontWeight: 500, fontSize: '0.8rem' }}>
-                  {item.dateLabel} ({item.date})
-                </Typography>
-              </Box>
-            ))}
-          </Box>
+          </Stack>
         )}
       </Box>
     </Paper>
@@ -281,8 +180,6 @@ export default function AnalyticsGlobal() {
     baseline: [],
     intervention: [],
     followup: [],
-    toInclude: 0,
-    alerts: []
   })
   const [loading, setLoading] = useState(true)
 
@@ -296,20 +193,22 @@ export default function AnalyticsGlobal() {
       api.get('/admin/analytics/users/intervention'),
       api.get('/admin/analytics/users/followup'),
     ])
-    .then(([activeRes, baselineRes, interventionRes, followupRes]) => {
-      if (!isMounted) return
-      setData({
-        active: activeRes.data.list ?? [],
-        baseline: baselineRes.data.list ?? [],
-        intervention: interventionRes.data.list ?? [],
-        followup: followupRes.data.list ?? [],
+      .then(([activeRes, baselineRes, interventionRes, followupRes]) => {
+        if (!isMounted) return
+        setData({
+          active: activeRes.data.list ?? [],
+          baseline: baselineRes.data.list ?? [],
+          intervention: interventionRes.data.list ?? [],
+          followup: followupRes.data.list ?? [],
+        })
       })
-    })
-    .catch(err => console.error('Error :', err))
-    .finally(() => {
-      if (isMounted) setLoading(false)
-    })
-    return () => { isMounted = false }
+      .catch((err) => console.error('Erreur chargement analytics :', err))
+      .finally(() => {
+        if (isMounted) setLoading(false)
+      })
+    return () => {
+      isMounted = false
+    }
   }, [])
 
   return (
@@ -318,59 +217,64 @@ export default function AnalyticsGlobal() {
         Suivi global
       </Typography>
 
-      {/* Premiere ligne: Chiffres Cles (Stat Cards) */}
+      {/* Première ligne: Chiffres clés (Stat Cards) */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <GrafanaStatCard
+          <StatCard
             title="Nombre de participants"
-            value={data.active.length + "/18"}
+            value={`${data.active.length}/18`}
             loading={loading}
             color="#5794f2"
+            subtitle="Inscrits sur l'étude"
           />
         </Grid>
 
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <GrafanaStatCard
-            title="Nombre de participants en phase de Baseline (A)"
+          <StatCard
+            title="Phase Baseline (A)"
             value={data.baseline.length}
             loading={loading}
             color="#f2994a"
+            subtitle="Phase initiale d'observation"
           />
         </Grid>
 
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <GrafanaStatCard
-            title="Nombre de participants en phase intervention (B)"
+          <StatCard
+            title="Phase Intervention (B)"
             value={data.intervention.length}
             loading={loading}
             color="#b362ff"
+            subtitle="Phase active de l'étude"
           />
         </Grid>
 
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <GrafanaStatCard
-            title="Nombre de participants en phase de suivi (A')"
+          <StatCard
+            title="Phase de suivi (A')"
             value={data.followup.length}
             loading={loading}
             color="#73bf69"
+            subtitle="Phase finale de suivi"
           />
         </Grid>
       </Grid>
 
-      {/* Seconde ligne: Restants a inclure & Listes des participants par phase */}
-      <Grid container spacing={3} sx={{ mb: 3 }}>
+      {/* Seconde ligne: Restants à inclure & Listes des participants par phase */}
+      <Grid container spacing={3}>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <GrafanaStatCard
-            title="Nombre de participants restants à inclure"
-            value={18 - data.active.length}
+          <StatCard
+            title="Restants à inclure"
+            value={Math.max(0, 18 - data.active.length) + "/18"}
             loading={loading}
             color="#5794f2"
+            icon={<PersonAddDisabledIcon />}
           />
         </Grid>
 
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <GrafanaListCard
-            title="Liste des participants (en baseline A)"
+          <ListCard
+            title="Baseline (A)"
             users={data.baseline}
             loading={loading}
             color="#f2994a"
@@ -379,8 +283,8 @@ export default function AnalyticsGlobal() {
         </Grid>
 
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <GrafanaListCard
-            title="Liste des participants (en phase B)"
+          <ListCard
+            title="Phase (B)"
             users={data.intervention}
             loading={loading}
             color="#b362ff"
@@ -389,22 +293,12 @@ export default function AnalyticsGlobal() {
         </Grid>
 
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <GrafanaListCard
-            title="Liste des participants (en phase de suivi A')"
+          <ListCard
+            title="Suivi (A')"
             users={data.followup}
             loading={loading}
             color="#73bf69"
             emptyMessage="Aucun participant en suivi (A')"
-          />
-        </Grid>
-      </Grid>
-
-      {/* Troisieme ligne: Module des Alertes (3 derniers jours) */}
-      <Grid container spacing={3}>
-        <Grid size={{ xs: 12 }}>
-          <GrafanaAlertsCard
-            alerts={data.alerts}
-            loading={loading}
           />
         </Grid>
       </Grid>

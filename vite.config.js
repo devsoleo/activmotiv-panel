@@ -12,7 +12,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ''),
         headers: { 
           'Content-Type': 'application/json',
-          'X-Client-Version': '3.0.0'
+          'X-Client-Version': '5.0.0'
         }
       }
     }
